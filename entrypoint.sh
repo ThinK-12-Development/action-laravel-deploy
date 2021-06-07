@@ -43,7 +43,11 @@ release_link() {
 }
 
 env_copy() {
-  ssh_command "cp $SHARED_PATH/.env $RELEASE_PATH/.env"
+  ssh_command "cp $SHARED_PATH/.env $RELEASE_PATH"
+}
+
+source_copy() {
+  ssh_command "mv $INPUT_SOURCE/* $RELEASE_PATH"
 }
 
 laravel_cache() {
@@ -71,6 +75,8 @@ laravel_storage_link() {
 release_create
 
 env_copy
+
+source_copy
 
 laravel_cache
 
