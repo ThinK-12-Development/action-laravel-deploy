@@ -40,7 +40,7 @@ echo " IdentityFile /etc/ssh/proxy.key" >> /etc/ssh/ssh_config
 #
 
 ssh_command() {
-  ssh destination "$1"
+  ssh destination "\$1"
 }
 
 release_create() {
