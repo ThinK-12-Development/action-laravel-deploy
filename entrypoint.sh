@@ -12,26 +12,35 @@ CURRENT_PATH=/home/$INPUT_USER/current
 SHARED_PATH=/home/$INPUT_USER/shared
 RELEASE_PATH=/home/$INPUT_USER/releases/$UNIX_EPOCH_MILLISECONDS
 
-REMOTE_SSH_KEY_FILE=remote.key
-PROXY_SSH_KEY_FILE=proxy.key
-PROXY_COMMAND="ssh -o StrictHostKeyChecking=no -i $PROXY_SSH_KEY_FILE $INPUT_PROXY_USER@$INPUT_PROXY_HOST -W %h:%p"
-
 #
-# Prepare SSH Keys
+# Prepare SSH config
 #
 
-echo "$INPUT_KEY" > $REMOTE_SSH_KEY_FILE
-echo "$INPUT_PROXY_KEY" > $PROXY_SSH_KEY_FILE
+echo "$INPUT_KEY" > /etc/ssh/remote.key
+echo "$INPUT_PROXY_KEY" > /etc/ssh/proxy.key
 
-chmod 400 $REMOTE_SSH_KEY_FILE
-chmod 400 $PROXY_SSH_KEY_FILE
+chmod 400 /etc/ssh/remote.key
+chmod 400 /etc/ssh/proxy.key
+
+echo "Host destination" >> /etc/ssh/ssh_config
+echo " User $INPUT_USER" >> /etc/ssh/ssh_config
+echo " HostName $INPUT_HOST" >> /etc/ssh/ssh_config
+echo " StrictHostKeyChecking=no" >> /etc/ssh/ssh_config
+echo " IdentityFile /etc/ssh/remote.key" >> /etc/ssh/ssh_config
+echo " ProxyJump proxy" >> /etc/ssh/ssh_config
+
+echo "Host proxy" >> /etc/ssh/ssh_config
+echo " User $INPUT_PROXY_USER" >> /etc/ssh/ssh_config
+echo " HostName $INPUT_PROXY_HOST" >> /etc/ssh/ssh_config
+echo " StrictHostKeyChecking=no" >> /etc/ssh/ssh_config
+echo " IdentityFile /etc/ssh/proxy.key" >> /etc/ssh/ssh_config
 
 #
 # Functions
 #
 
 ssh_command() {
-  ssh -o "ProxyCommand $PROXY_COMMAND" -i "$REMOTE_SSH_KEY_FILE" "$INPUT_USER@$INPUT_HOST" "$1"
+  ssh destination "$1"
 }
 
 release_create() {
