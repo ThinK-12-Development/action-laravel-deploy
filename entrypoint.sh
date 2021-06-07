@@ -51,17 +51,17 @@ source_copy() {
 }
 
 laravel_cache() {
-  local cache_commands=("cd $INPUT_SOURCE" ";php artisan cache:clear")
+  local remote_commands=("cd $INPUT_SOURCE" ";php artisan cache:clear")
 
   IFS=',' read -r -a cache_commands <<< "$INPUT_CACHE"
 
   for i in "${!cache_commands[@]}"; do
       if [[ $i -ne 0 ]]; then
-          cache_commands[i]=";php artisan ${cache_commands[i]}:cache"
+          remote_commands[i]=";php artisan ${cache_commands[i]}:cache"
       fi
   done
 
-  ssh_command "${cache_commands[@]}"
+  ssh_command "${remote_commands[@]}"
 }
 
 laravel_storage_link() {
