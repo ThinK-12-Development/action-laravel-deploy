@@ -6,11 +6,11 @@ set -euo pipefail
 # Config
 #
 
-UNIX_EPOCH_MILLISECONDS=$(($(date +%s%N)/1000000))
+UNIX_EPOCH_SECONDS=$(date +%s)
 
 CURRENT_PATH=/home/$INPUT_USER/current
 SHARED_PATH=/home/$INPUT_USER/shared
-RELEASE_PATH=/home/$INPUT_USER/releases/$UNIX_EPOCH_MILLISECONDS
+RELEASE_PATH=/home/$INPUT_USER/releases/$UNIX_EPOCH_SECONDS
 
 #
 # Prepare SSH config
