@@ -1,0 +1,40 @@
+name: 'action-laravel-deploy'
+description: 'Deploys a remote Laravel instance'
+author: "Tyler O'Brien"
+inputs:
+  host:
+    description: 'Hostname or IP address of remote to copy to'
+    required: true
+  port:
+    description: 'Port to use for SSH operations'
+    default: 22
+  user:
+    description: 'Username of remote user'
+    required: true
+  key:
+    description: 'Private SSH key used to identify remote user'
+    required: true
+  proxy_host:
+    description: 'Hostname or IP address of proxy'
+    required: true
+  proxy_port:
+    description: 'Port to use for proxied SSH operations'
+    default: 22
+  proxy_user:
+    description: 'Username of proxy user'
+    default: 'bastion'
+  proxy_key:
+    description: 'Private SSH key used to identify proxy user'
+    required: true
+  source:
+    description: 'Filepath of Laravel instance to be deployed'
+    required: true
+  cache:
+    description: 'Comma-separated list of which Laravel entities to cache'
+    default: 'config,route,view'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'copy'
+  color: 'orange'
