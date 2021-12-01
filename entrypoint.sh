@@ -77,6 +77,10 @@ laravel_storage_link() {
   ssh_command "rm -rf $RELEASE_PATH/storage;ln -s $SHARED_PATH/storage $RELEASE_PATH;ln -s $RELEASE_PATH/storage/app/public $RELEASE_PATH/public/storage"
 }
 
+cleanup() {
+  ssh_command "if [ -f cleanup-releases ]; then ./cleanup-releases; else false; fi"
+}
+
 #
 # Main
 #
@@ -92,3 +96,5 @@ laravel_cache
 laravel_storage_link
 
 release_link
+
+cleanup
