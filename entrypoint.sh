@@ -79,6 +79,7 @@ laravel_storage_link() {
 
 cleanup() {
   ssh_command "if [ -f cleanup-releases ]; then ./cleanup-releases; else false; fi"
+  ssh_command "echo $RELEASE_PATH > previous"
 }
 
 #
